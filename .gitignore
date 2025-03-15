@@ -56,3 +56,5 @@ nunit-*.xml
 rocket_launches.db
 
 launches.json
+
+appsettings.json
