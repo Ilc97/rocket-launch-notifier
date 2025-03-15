@@ -15,7 +15,7 @@ namespace RocketLaunchNotifier.Services
         {
             // Load configuration from appsettings.json
             var config = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
+                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 
@@ -50,7 +50,16 @@ namespace RocketLaunchNotifier.Services
             }
             catch (Exception ex)
             {
+                
                 Console.WriteLine($"Error sending email to {recipient}: {ex.Message}");
+            }
+        }
+
+        public void SendEmails(List<string> recipients, string subject, string body)
+        {
+            foreach (var recipient in recipients)
+            {
+                SendEmail(recipient, subject, body);
             }
         }
     }

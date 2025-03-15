@@ -2,14 +2,14 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using RocketLaunchNotifier.Models;
 
-namespace RocketLaunchNotifier.Data
+namespace RocketLaunchNotifier.Database.LaunchRepository
 {
-    public class DatabaseService
+    public class LaunchRepository
     {
         private readonly string _dbFile;
-        private readonly ILogger<DatabaseService> _logger;
+        private readonly ILogger<LaunchRepository> _logger;
 
-        public DatabaseService(string dbFile, ILogger<DatabaseService> logger)
+        public LaunchRepository(string dbFile, ILogger<LaunchRepository> logger)
         {
             _dbFile = dbFile;
             _logger = logger;

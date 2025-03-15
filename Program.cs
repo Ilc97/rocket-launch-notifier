@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using RocketLaunchNotifier.Data;
+using RocketLaunchNotifier.Database.LaunchRepository;
 using RocketLaunchNotifier.Services;
 using RocketLaunchNotifier.Models;
+using RocketLaunchNotifier.Database.EmailRepository;
+
 
 class Program
 {   
@@ -9,7 +11,8 @@ class Program
     private static readonly string JsonFile = "launches_example.json";
 
     //File path for DB
-    private static readonly string DbFile = "rocket_launches.db";
+    private static readonly string DbFile_launches = "rocket_launches.db";
+    private static readonly string DbFile_emails = "emails.db";
 
     //Logger init
     private static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder => builder.AddConsole(options =>
@@ -24,14 +27,21 @@ class Program
     {
         Logger.LogInformation("Application started.");
 
-        var dbService = new DatabaseService(DbFile, LoggerFactory.CreateLogger<DatabaseService>());
+        var launchRepo = new LaunchRepository(DbFile_launches, LoggerFactory.CreateLogger<LaunchRepository>());
+        var emailRepo = new EmailRepository(DbFile_emails, LoggerFactory.CreateLogger<EmailRepository>());
         var jsonService = new JsonService(LoggerFactory.CreateLogger<JsonService>());
 
-        dbService.EnsureDatabase();
-        var newLaunches = await jsonService.LoadLaunchDataFromFile(JsonFile);
-        var existingLaunches = dbService.GetExistingLaunches();
+        launchRepo.EnsureDatabase();
+        emailRepo.EnsureEmailTable();
 
-        var changes = CompareAndUpdateLaunches(dbService, newLaunches, existingLaunches);
+
+        var emailList = await jsonService.LoadEmailsFromJson("emails_config.json");
+        emailRepo.UpdateEmailReceivers(emailList);
+
+        var newLaunches = await jsonService.LoadLaunchDataFromFile(JsonFile);
+        var existingLaunches = launchRepo.GetExistingLaunches();
+
+        var changes = CompareAndUpdateLaunches(launchRepo, newLaunches, existingLaunches);
         
         Logger.LogInformation("Changes detected: " + changes.Count);
         foreach (var change in changes)
@@ -39,10 +49,35 @@ class Program
             Logger.LogInformation(change);
         }
 
+
+        var emailService = new EmailService();
+
+        // Fetch emails from database
+        var (newMembers, existingMembers) = emailRepo.GetEmailsFromDatabase();
+
+        if (changes.Count > 0)
+        {
+            var changeMessage = string.Join("\n", changes);
+            
+            // Send changes to existing members
+            if (existingMembers.Count > 0)
+            {
+                emailService.SendEmails(existingMembers, "Rocket Launch Updates", changeMessage);
+            }
+            
+            // Send full launches table to new members
+            if (newMembers.Count > 0)
+            {
+                var fullLaunchMessage = string.Join("\n", existingLaunches);
+                emailService.SendEmails(newMembers, "Welcome! Upcoming Rocket Launches", fullLaunchMessage);
+            }
+        }
+
+
         Logger.LogInformation("Application finished execution.");
     }
 
-    private static List<string> CompareAndUpdateLaunches(DatabaseService dbService, List<Launch> newLaunches, List<Launch> existingLaunches)
+    private static List<string> CompareAndUpdateLaunches(LaunchRepository dbService, List<Launch> newLaunches, List<Launch> existingLaunches)
     {
         var changes = new List<string>();
         var existingDict = existingLaunches.ToDictionary(l => l.Id);

@@ -53,8 +53,9 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 
+#Exclude db's
 rocket_launches.db
+emails.db
 
-launches.json
-
+#Settings json
 appsettings.json
