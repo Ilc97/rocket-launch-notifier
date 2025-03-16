@@ -1,17 +1,19 @@
 using System.Net;
 using System.Net.Mail;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace RocketLaunchNotifier.Services
 {
     public class EmailService
     {
+        private readonly ILogger<EmailService> _logger;
         private readonly string _smtpHost;
         private readonly int _smtpPort;
         private readonly string _smtpUser;
         private readonly string _smtpPass;
 
-        public EmailService()
+        public EmailService(ILogger<EmailService> logger)
         {
             // Load configuration from appsettings.json
             var config = new ConfigurationBuilder()
@@ -23,6 +25,7 @@ namespace RocketLaunchNotifier.Services
             _smtpPort = int.Parse(config["SmtpSettings:Port"]);
             _smtpUser = config["SmtpSettings:User"];
             _smtpPass = config["SmtpSettings:Pass"];
+            _logger = logger;
         }
 
         public void SendEmail(string recipient, string subject, string body)
@@ -46,12 +49,11 @@ namespace RocketLaunchNotifier.Services
                 mailMessage.To.Add(recipient);
 
                 smtpClient.Send(mailMessage);
-                Console.WriteLine($"Email sent to {recipient}");
+                _logger.LogInformation($"Email sent to {recipient}.");
             }
             catch (Exception ex)
             {
-                
-                Console.WriteLine($"Error sending email to {recipient}: {ex.Message}");
+                _logger.LogError($"Error sending email to {recipient}: {ex.Message}");
             }
         }
 

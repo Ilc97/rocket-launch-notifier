@@ -53,14 +53,14 @@ namespace RocketLaunchNotifier.Database.EmailRepository
                 else
                     existingMembers.Add(email);
             }
-
+            _logger.LogInformation("Emails fetched.");
             return (newMembers, existingMembers);
         }
 
         public void UpdateEmailReceivers(List<string> emailList)
         {
             _logger.LogInformation("Updating email receivers.");
-            
+
             using var connection = new SqliteConnection($"Data Source={_dbFile}");
             connection.Open();
 
@@ -77,6 +77,8 @@ namespace RocketLaunchNotifier.Database.EmailRepository
                 command.ExecuteNonQuery();
             }
             transaction.Commit();
+
+            _logger.LogInformation("Emails updated.");
         }
     }
 }

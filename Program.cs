@@ -27,21 +27,28 @@ class Program
     {
         Logger.LogInformation("Application started.");
 
+        //Inits
         var launchRepo = new LaunchRepository(DbFile_launches, LoggerFactory.CreateLogger<LaunchRepository>());
         var emailRepo = new EmailRepository(DbFile_emails, LoggerFactory.CreateLogger<EmailRepository>());
         var jsonService = new JsonService(LoggerFactory.CreateLogger<JsonService>());
-
+        var emailService = new EmailService(LoggerFactory.CreateLogger<EmailService>());
+        var launchService = new LaunchService(LoggerFactory.CreateLogger<LaunchService>());
+        //Create tables if not exist
         launchRepo.EnsureDatabase();
         emailRepo.EnsureEmailTable();
 
-
+        //Loading list of emails from json
         var emailList = await jsonService.LoadEmailsFromJson("emails_config.json");
+
+        //Updating the table if new receivers
         emailRepo.UpdateEmailReceivers(emailList);
 
+        //List of launches from file and updating the table
         var newLaunches = await jsonService.LoadLaunchDataFromFile(JsonFile);
-        var existingLaunches = launchRepo.GetExistingLaunches();
+        var existingLaunches = await launchRepo.GetExistingLaunches();
 
-        var changes = CompareAndUpdateLaunches(launchRepo, newLaunches, existingLaunches);
+        //Get a list of changes between the API and Database
+        var changes = await launchService.CompareAndUpdateLaunches(launchRepo, newLaunches, existingLaunches);
         
         Logger.LogInformation("Changes detected: " + changes.Count);
         foreach (var change in changes)
@@ -49,8 +56,6 @@ class Program
             Logger.LogInformation(change);
         }
 
-
-        var emailService = new EmailService();
 
         // Fetch emails from database
         var (newMembers, existingMembers) = emailRepo.GetEmailsFromDatabase();
@@ -71,38 +76,12 @@ class Program
                 var fullLaunchMessage = string.Join("\n", existingLaunches);
                 emailService.SendEmails(newMembers, "Welcome! Upcoming Rocket Launches", fullLaunchMessage);
             }
+        } else {
+            Logger.LogInformation("Nothing new...");
         }
 
 
         Logger.LogInformation("Application finished execution.");
     }
 
-    private static List<string> CompareAndUpdateLaunches(LaunchRepository dbService, List<Launch> newLaunches, List<Launch> existingLaunches)
-    {
-        var changes = new List<string>();
-        var existingDict = existingLaunches.ToDictionary(l => l.Id);
-        var newIds = new HashSet<string>(newLaunches.Select(l => l.Id));
-
-        foreach (var newLaunch in newLaunches)
-        {
-            if (!existingDict.TryGetValue(newLaunch.Id, out var existingLaunch))
-            {
-                changes.Add($"New: {newLaunch.Name} (Date: {newLaunch.Net})");
-                dbService.InsertLaunch(newLaunch);
-            }
-            else if (existingLaunch.Name != newLaunch.Name || existingLaunch.Net != newLaunch.Net || existingLaunch.Status.Name != newLaunch.Status.Name)
-            {
-                changes.Add($"Updated: {newLaunch.Name} (New Date: {newLaunch.Net}, New Status: {newLaunch.Status.Name})");
-                dbService.UpdateLaunch(newLaunch);
-            }
-        }
-
-        foreach (var id in existingDict.Keys.Except(newIds))
-        {
-            changes.Add($"Postponed: {existingDict[id].Name} (Previous Date: {existingDict[id].Net})");
-            dbService.DeleteLaunch(id);
-        }
-
-        return changes;
-    }
 }

@@ -1,6 +1,8 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using RocketLaunchNotifier.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RocketLaunchNotifier.Database.LaunchRepository
 {
@@ -15,11 +17,12 @@ namespace RocketLaunchNotifier.Database.LaunchRepository
             _logger = logger;
         }
 
-        public void EnsureDatabase()
+        public async Task EnsureDatabase()
         {
-            using var connection = new SqliteConnection($"Data Source={_dbFile}");
-            connection.Open();
-            using var command = connection.CreateCommand();
+            await using var connection = new SqliteConnection($"Data Source={_dbFile}");
+            await connection.OpenAsync();
+
+            await using var command = connection.CreateCommand();
             command.CommandText = @"
                 CREATE TABLE IF NOT EXISTS Launches (
                     Id TEXT PRIMARY KEY,
@@ -27,19 +30,22 @@ namespace RocketLaunchNotifier.Database.LaunchRepository
                     LaunchDate TEXT,
                     Status TEXT
                 );";
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
             _logger.LogInformation("Database ensured.");
         }
 
-        public List<Launch> GetExistingLaunches()
-        {
+        public async Task<List<Launch>> GetExistingLaunches()
+        {   
             var launches = new List<Launch>();
-            using var connection = new SqliteConnection($"Data Source={_dbFile}");
-            connection.Open();
-            using var command = connection.CreateCommand();
+
+            await using var connection = new SqliteConnection($"Data Source={_dbFile}");
+            await connection.OpenAsync();
+
+            await using var command = connection.CreateCommand();
             command.CommandText = "SELECT Id, Name, LaunchDate, Status FROM Launches;";
-            using var reader = command.ExecuteReader();
-            while (reader.Read())
+
+            await using var reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
             {
                 launches.Add(new Launch
                 {
@@ -49,14 +55,17 @@ namespace RocketLaunchNotifier.Database.LaunchRepository
                     Status = new Status { Name = reader.GetString(3) }
                 });
             }
+
+            _logger.LogInformation("Existing launches fetched.");
             return launches;
         }
 
-        public void InsertLaunch(Launch launch)
+        public async Task InsertLaunch(Launch launch)
         {
-            using var connection = new SqliteConnection($"Data Source={_dbFile}");
-            connection.Open();
-            using var command = connection.CreateCommand();
+            await using var connection = new SqliteConnection($"Data Source={_dbFile}");
+            await connection.OpenAsync();
+
+            await using var command = connection.CreateCommand();
             command.CommandText = @"
                 INSERT INTO Launches (Id, Name, LaunchDate, Status) 
                 VALUES (@Id, @Name, @LaunchDate, @Status);";
@@ -64,14 +73,17 @@ namespace RocketLaunchNotifier.Database.LaunchRepository
             command.Parameters.AddWithValue("@Name", launch.Name);
             command.Parameters.AddWithValue("@LaunchDate", launch.Net);
             command.Parameters.AddWithValue("@Status", launch.Status.Name);
-            command.ExecuteNonQuery();
+
+            await command.ExecuteNonQueryAsync();
+            _logger.LogInformation("Launch inserted.");
         }
 
-        public void UpdateLaunch(Launch launch)
+        public async Task UpdateLaunch(Launch launch)
         {
-            using var connection = new SqliteConnection($"Data Source={_dbFile}");
-            connection.Open();
-            using var command = connection.CreateCommand();
+            await using var connection = new SqliteConnection($"Data Source={_dbFile}");
+            await connection.OpenAsync();
+
+            await using var command = connection.CreateCommand();
             command.CommandText = @"
                 UPDATE Launches 
                 SET Name = @Name, LaunchDate = @LaunchDate, Status = @Status
@@ -80,17 +92,22 @@ namespace RocketLaunchNotifier.Database.LaunchRepository
             command.Parameters.AddWithValue("@Name", launch.Name);
             command.Parameters.AddWithValue("@LaunchDate", launch.Net);
             command.Parameters.AddWithValue("@Status", launch.Status.Name);
-            command.ExecuteNonQuery();
+
+            await command.ExecuteNonQueryAsync();
+            _logger.LogInformation("Launch updated.");
         }
 
-        public void DeleteLaunch(string launchId)
+        public async Task DeleteLaunch(string launchId)
         {
-            using var connection = new SqliteConnection($"Data Source={_dbFile}");
-            connection.Open();
-            using var command = connection.CreateCommand();
+            await using var connection = new SqliteConnection($"Data Source={_dbFile}");
+            await connection.OpenAsync();
+
+            await using var command = connection.CreateCommand();
             command.CommandText = "DELETE FROM Launches WHERE Id = @Id;";
             command.Parameters.AddWithValue("@Id", launchId);
-            command.ExecuteNonQuery();
+
+            await command.ExecuteNonQueryAsync();
+            _logger.LogInformation("Launch deleted.");
         }
     }
 }
