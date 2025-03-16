@@ -42,9 +42,9 @@ namespace RocketLaunchNotifier.Services
                 var mailMessage = new MailMessage
                 {
                     From = new MailAddress(_smtpUser),
-                    Subject = subject,
+                    Subject = "🚀 " + subject,
                     Body = body,
-                    IsBodyHtml = false
+                    IsBodyHtml = true
                 };
                 mailMessage.To.Add(recipient);
 

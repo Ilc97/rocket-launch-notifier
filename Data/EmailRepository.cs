@@ -1,6 +1,7 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace RocketLaunchNotifier.Database.EmailRepository
@@ -32,11 +33,12 @@ namespace RocketLaunchNotifier.Database.EmailRepository
             _logger.LogInformation("Database ensured.");
         }
 
-        public async Task<(List<string> newMembers, List<string> existingMembers)> GetEmailsFromDatabase()
+        public async Task<(List<string> newMembers, List<string> existingMembers, List<string> allMembers)> GetEmailsFromDatabase()
         {
             _logger.LogInformation("Fetching emails from database...");
             var newMembers = new List<string>();
             var existingMembers = new List<string>();
+            var allMembers = new List<string>();
 
             await using var connection = new SqliteConnection($"Data Source={_dbFile}");
             await connection.OpenAsync();
@@ -49,13 +51,19 @@ namespace RocketLaunchNotifier.Database.EmailRepository
             {
                 var email = reader.GetString(0);
                 var isNew = reader.GetBoolean(1);
-                if (isNew)
+
+                allMembers.Add(email);
+
+                if (isNew){
                     newMembers.Add(email);
-                else
+                }
+                else{
                     existingMembers.Add(email);
+                }
+                    
             }
             _logger.LogInformation("Emails fetched.");
-            return (newMembers, existingMembers);
+            return (newMembers, existingMembers, allMembers);
         }
 
         public async Task UpdateEmailReceivers(List<string> emailList)
@@ -64,8 +72,9 @@ namespace RocketLaunchNotifier.Database.EmailRepository
 
             await using var connection = new SqliteConnection($"Data Source={_dbFile}");
             await connection.OpenAsync();
-
             await using var transaction = await connection.BeginTransactionAsync();
+
+            // Step 1: Insert new emails or update existing ones
             foreach (var email in emailList)
             {
                 await using var command = connection.CreateCommand();
@@ -77,9 +86,18 @@ namespace RocketLaunchNotifier.Database.EmailRepository
                 command.Parameters.AddWithValue("@Email", email);
                 await command.ExecuteNonQueryAsync();
             }
-            await transaction.CommitAsync();
 
+            // Step 2: Delete emails that are in the database but NOT in the provided emailList
+            await using var deleteCommand = connection.CreateCommand();
+            deleteCommand.CommandText = @"
+                DELETE FROM email_receivers 
+                WHERE email NOT IN (" + string.Join(",", emailList.Select(e => $"'{e}'")) + ");";
+            await deleteCommand.ExecuteNonQueryAsync();
+
+            await transaction.CommitAsync();
             _logger.LogInformation("Emails updated.");
         }
+
+
     }
 }

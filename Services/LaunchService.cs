@@ -13,9 +13,9 @@ namespace RocketLaunchNotifier.Services
             _logger = logger;
         }
 
-        public async Task<List<string>> CompareAndUpdateLaunches(LaunchRepository dbService, List<Launch> newLaunches, List<Launch> existingLaunches)
+        public async Task<List<LaunchChange>> CompareAndUpdateLaunches(LaunchRepository dbService, List<Launch> newLaunches, List<Launch> existingLaunches)
         {
-            var changes = new List<string>();
+            var changes = new List<LaunchChange>();
             var existingDict = existingLaunches.ToDictionary(l => l.Id);
             var newIds = new HashSet<string>(newLaunches.Select(l => l.Id));
 
@@ -23,19 +23,29 @@ namespace RocketLaunchNotifier.Services
             {
                 if (!existingDict.TryGetValue(newLaunch.Id, out var existingLaunch))
                 {
-                    changes.Add($"New: {newLaunch.Name} (Date: {newLaunch.Net})");
+                    // New Launch
+                    changes.Add(new LaunchChange(newLaunch, LaunchChangeType.NEW));
                     await dbService.InsertLaunch(newLaunch);
                 }
-                else if (existingLaunch.Name != newLaunch.Name || existingLaunch.Net != newLaunch.Net || existingLaunch.Status.Name != newLaunch.Status.Name)
+                else if (existingLaunch.Net != newLaunch.Net || existingLaunch.Status.Name != newLaunch.Status.Name)
                 {
-                    changes.Add($"Updated: {newLaunch.Name} (New Date: {newLaunch.Net}, New Status: {newLaunch.Status.Name})");
-                    await dbService.UpdateLaunch(newLaunch);
+                    if(existingLaunch.Net != newLaunch.Net){
+                        // Updated Launch (rescheduled)
+                        changes.Add(new LaunchChange(newLaunch, LaunchChangeType.RESCHEDULED));
+                        await dbService.UpdateLaunch(newLaunch);
+                    }else{
+                        // Updated Launch (new status)
+                        changes.Add(new LaunchChange(newLaunch, LaunchChangeType.STATUS_CHANGE));
+                        await dbService.UpdateLaunch(newLaunch);
+                    }
+                    
                 }
             }
 
             foreach (var id in existingDict.Keys.Except(newIds))
             {
-                changes.Add($"Postponed: {existingDict[id].Name} (Previous Date: {existingDict[id].Net})");
+                // Postponed Launch (removed from new data)
+                changes.Add(new LaunchChange(existingDict[id], LaunchChangeType.POSTPONED));
                 await dbService.DeleteLaunch(id);
             }
 

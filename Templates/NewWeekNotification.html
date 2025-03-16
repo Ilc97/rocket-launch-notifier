@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #f1f1f1; /* Light text */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Main Email Container */
+        .email-container {
+            width: 500px;
+            background: #1e1e1e; /* Dark gray box */
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Rocket GIF (Top-Right) */
+        .rocket-gif {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 50px; 
+            background-color: #12121200;
+            mix-blend-mode: lighten; 
+            background: none; 
+        }
+
+        /* Title */
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #ffcc00; /* Gold */
+        }
+
+        /* Description */
+        .description {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: rgb(214, 214, 214);
+        }
+
+        /* Days Section */
+        .day-section {
+            margin-bottom: 15px;
+        }
+
+        .day-section h3 {
+            font-size: 18px;
+            color: #ff6600; /* Orange */
+            margin-bottom: 5px;
+            border-bottom: 1px solid #ff6600;
+            padding-bottom: 3px;
+        }
+
+        /* Launch Card */
+        .launch-card {
+            background: #292929;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            box-shadow: 0px 4px 8px rgba(255, 153, 0, 0.2); /* Orange shadow */
+            color: rgb(214, 214, 214);
+        }
+
+        .rocket-icon {
+            margin-right: 8px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+            color: rgb(214, 214, 214);
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <img class="rocket-gif" src="https://media-hosting.imagekit.io//43459721a1be46dc/06-27-17-124_512-ezgif.com-webp-to-gif-converter.gif?Expires=1836737115&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=FMpAUaPK2S6UJEB3WOYhGfUaOxzwCKLfhxm7NJX3lU4WSm~JiSvYWhb-eMxI-yEroGZF~hhJwCyrCxDhPVqvJDGD4qdjejfpv5Jh0KC5sBBZwEQdWdlALgw-X5ZlW1gW5V1AENT2jzNXnrX0miC6wL5YgNQiTnR7pBz0JTpk9e9NrjS6-Wkhu3GIXCTzPNSFoDnS4dpHcdFQw1wL4b3znMxzIS7jklP3P7dtkihBw2Q0F6aFye55ES8VDxpIILjfYmYRp4rKfHqxOeheTeRl~~xGwN~Pex9WFuMb44dhZTHq~2YMxi8YW~NgDooth8dKKi7BVW-NvfZYsgGFQOAnKQ__" alt="Rocket">
+        
+        <div class="title">Upcoming Rocket Launches</div>
+        <div class="description">Here are the scheduled launches for the upcoming week:</div>
+
+        <!-- Launch List Injected Here -->
+        {{LaunchesList}}
+
+        <div class="footer">Best regards, <br> Rocket Launch Notifier</div>
+    </div>
+</body>
+</html>
