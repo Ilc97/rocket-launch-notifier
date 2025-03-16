@@ -54,8 +54,9 @@ TestResult.xml
 nunit-*.xml
 
 #Exclude db's
-rocket_launches.db
-emails.db
+Data/Database/*
+Data/Database/rocket_launches.db
+Data/Database/emails.db
 
 #Settings json
 appsettings.json

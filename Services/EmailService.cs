@@ -64,5 +64,6 @@ namespace RocketLaunchNotifier.Services
                 SendEmail(recipient, subject, body);
             }
         }
+        
     }
 }
