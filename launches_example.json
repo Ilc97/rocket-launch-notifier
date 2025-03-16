@@ -9,14 +9,14 @@
             "name": "Falcon 9 Block 5 | Crew-10",
             "response_mode": "list",
             "slug": "falcon-9-block-5-crew-10",
-            "launch_designator": null,
+            "launch_designator": "2025-049",
             "status": {
                 "id": 3,
                 "name": "Launch Successful",
                 "abbrev": "Success",
                 "description": "The launch vehicle successfully inserted its payload(s) into the target orbit(s)."
             },
-            "last_updated": "2025-03-15T00:13:20Z",
+            "last_updated": "2025-03-16T02:08:38Z",
             "net": "2025-03-14T23:03:48Z",
             "net_precision": {
                 "id": 0,
@@ -49,14 +49,14 @@
             "name": "Electron | The Lightning God Reigns (iQPS Launch 1)",
             "response_mode": "list",
             "slug": "electron-the-lightning-god-reigns-iqps-launch-1",
-            "launch_designator": null,
+            "launch_designator": "2025-050",
             "status": {
                 "id": 3,
                 "name": "Launch Successful",
                 "abbrev": "Success",
                 "description": "The launch vehicle successfully inserted its payload(s) into the target orbit(s)."
             },
-            "last_updated": "2025-03-15T03:47:24Z",
+            "last_updated": "2025-03-16T03:13:24Z",
             "net": "2025-03-15T00:00:00Z",
             "net_precision": {
                 "id": 1,
@@ -89,14 +89,14 @@
             "name": "Long March 2D | SuperView Neo 3-02",
             "response_mode": "list",
             "slug": "long-march-2d-superview-neo-3-02",
-            "launch_designator": null,
+            "launch_designator": "2025-051",
             "status": {
                 "id": 3,
                 "name": "Launch Successful",
                 "abbrev": "Success",
                 "description": "The launch vehicle successfully inserted its payload(s) into the target orbit(s)."
             },
-            "last_updated": "2025-03-15T04:38:12Z",
+            "last_updated": "2025-03-16T04:18:34Z",
             "net": "2025-03-15T04:11:00Z",
             "net_precision": {
                 "id": 1,
@@ -129,14 +129,14 @@
             "name": "Falcon 9 Block 5 | Transporter 13 (Dedicated SSO Rideshare)",
             "response_mode": "list",
             "slug": "falcon-9-block-5-transporter-13-dedicated-sso-ride",
-            "launch_designator": null,
+            "launch_designator": "2025-052",
             "status": {
-                "id": 6,
-                "name": "Launch in Flight",
-                "abbrev": "In Flight",
-                "description": "The launch vehicle has lifted off from the launchpad."
+                "id": 3,
+                "name": "Launch Successful",
+                "abbrev": "Success",
+                "description": "The launch vehicle successfully inserted its payload(s) into the target orbit(s)."
             },
-            "last_updated": "2025-03-15T07:04:28Z",
+            "last_updated": "2025-03-16T07:50:32Z",
             "net": "2025-03-15T06:43:00Z",
             "net_precision": {
                 "id": 0,
@@ -164,60 +164,20 @@
             "infographic": null
         },
         {
-            "id": "318df8ac-45a8-402b-a164-8bb7032601fd",
-            "url": "https://ll.thespacedevs.com/2.3.0/launches/318df8ac-45a8-402b-a164-8bb7032601fd/",
-            "name": "Angara 1.2 | Kosmos (Unknown Payload)",
-            "response_mode": "list",
-            "slug": "angara-12-kosmos-unknown-payload",
-            "launch_designator": null,
-            "status": {
-                "id": 1,
-                "name": "Go for Launch",
-                "abbrev": "Go",
-                "description": "Current T-0 confirmed by official or reliable sources."
-            },
-            "last_updated": "2025-03-12T01:32:28Z",
-            "net": "2025-03-17T10:50:00Z",
-            "net_precision": {
-                "id": 2,
-                "name": "Hour",
-                "abbrev": "HR",
-                "description": "The T-0 is accurate to the hour."
-            },
-            "window_end": "2025-03-15T11:30:00Z",
-            "window_start": "2025-03-15T10:30:00Z",
-            "image": {
-                "id": 1677,
-                "name": "[AUTO] Angara 1.2 - image",
-                "image_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/angara25201.2_image_20190224012254.jpeg",
-                "thumbnail_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/255bauto255d__image_thumbnail_20240305193449.jpeg",
-                "credit": null,
-                "license": {
-                    "id": 1,
-                    "name": "Unknown",
-                    "priority": 9,
-                    "link": null
-                },
-                "single_use": true,
-                "variants": []
-            },
-            "infographic": null
-        },
-        {
             "id": "721a8641-458c-49ee-8442-2ef5b6fba880",
             "url": "https://ll.thespacedevs.com/2.3.0/launches/721a8641-458c-49ee-8442-2ef5b6fba880/",
             "name": "Falcon 9 Block 5 | Starlink Group 12-16",
             "response_mode": "list",
             "slug": "falcon-9-block-5-starlink-group-12-16",
-            "launch_designator": null,
+            "launch_designator": "2025-053",
             "status": {
-                "id": 1,
-                "name": "Go for Launch",
-                "abbrev": "Go",
-                "description": "Current T-0 confirmed by official or reliable sources."
+                "id": 3,
+                "name": "Launch Successful",
+                "abbrev": "Success",
+                "description": "The launch vehicle successfully inserted its payload(s) into the target orbit(s)."
             },
-            "last_updated": "2025-03-15T03:51:52Z",
-            "net": "2025-03-15T11:35:00Z",
+            "last_updated": "2025-03-16T09:09:55Z",
+            "net": "2025-03-15T11:35:10Z",
             "net_precision": {
                 "id": 0,
                 "name": "Second",
@@ -239,6 +199,46 @@
                     "link": "https://creativecommons.org/licenses/by-nc/2.0/"
                 },
                 "single_use": false,
+                "variants": []
+            },
+            "infographic": null
+        },
+        {
+            "id": "318df8ac-45a8-402b-a164-8bb7032601fd",
+            "url": "https://ll.thespacedevs.com/2.3.0/launches/318df8ac-45a8-402b-a164-8bb7032601fd/",
+            "name": "Angara 1.2 | Kosmos (Unknown Payload)",
+            "response_mode": "list",
+            "slug": "angara-12-kosmos-unknown-payload",
+            "launch_designator": null,
+            "status": {
+                "id": 3,
+                "name": "Launch Successful",
+                "abbrev": "Success",
+                "description": "The launch vehicle successfully inserted its payload(s) into the target orbit(s)."
+            },
+            "last_updated": "2025-03-16T14:36:42Z",
+            "net": "2025-03-16T10:50:00Z",
+            "net_precision": {
+                "id": 1,
+                "name": "Minute",
+                "abbrev": "MIN",
+                "description": "The T-0 is accurate to the minute."
+            },
+            "window_end": "2025-03-16T11:30:00Z",
+            "window_start": "2025-03-16T10:30:00Z",
+            "image": {
+                "id": 1677,
+                "name": "[AUTO] Angara 1.2 - image",
+                "image_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/angara25201.2_image_20190224012254.jpeg",
+                "thumbnail_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/255bauto255d__image_thumbnail_20240305193449.jpeg",
+                "credit": null,
+                "license": {
+                    "id": 1,
+                    "name": "Unknown",
+                    "priority": 9,
+                    "link": null
+                },
+                "single_use": true,
                 "variants": []
             },
             "infographic": null
@@ -296,7 +296,7 @@
                 "abbrev": "Go",
                 "description": "Current T-0 confirmed by official or reliable sources."
             },
-            "last_updated": "2025-03-15T07:30:32Z",
+            "last_updated": "2025-03-15T08:08:19Z",
             "net": "2025-03-18T01:31:00Z",
             "net_precision": {
                 "id": 1,

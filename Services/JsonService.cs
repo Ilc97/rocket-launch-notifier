@@ -29,5 +29,26 @@ namespace RocketLaunchNotifier.Services
                 return new List<Launch>();
             }
         }
+
+        public async Task<List<string>> LoadEmailsFromJson(string jsonFile)
+        {
+            try
+            {
+                var jsonContent = await File.ReadAllTextAsync(jsonFile);
+
+                var emailConfig = JsonSerializer.Deserialize<EmailConfig>(jsonContent, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                // Extract only the email addresses
+                return emailConfig?.EmailReceivers?.Select(e => e.Email).ToList() ?? new List<string>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error reading email JSON file: {ex.Message}");
+                return new List<string>();
+            }
+        }
     }
 }

@@ -1,73 +1,173 @@
 ﻿using Microsoft.Extensions.Logging;
-using RocketLaunchNotifier.Data;
+using RocketLaunchNotifier.Database.LaunchRepository;
 using RocketLaunchNotifier.Services;
+using RocketLaunchNotifier.Database.EmailRepository;
+using System.Globalization;
 using RocketLaunchNotifier.Models;
 
 class Program
-{   
-    //Testing JSON response instead of API call
+{
     private static readonly string JsonFile = "launches_example.json";
+    private static readonly string DbFile_launches = "rocket_launches.db";
+    private static readonly string DbFile_emails = "emails.db";
 
-    //File path for DB
-    private static readonly string DbFile = "rocket_launches.db";
-
-    //Logger init
     private static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder => builder.AddConsole(options =>
-        {
-            options.TimestampFormat = "[HH:mm:ss] ";
-        }
-    ));
+    {
+        options.TimestampFormat = "[HH:mm:ss] ";
+    }));
     private static readonly ILogger<Program> Logger = LoggerFactory.CreateLogger<Program>();
 
-    //Main Task
     static async Task Main()
     {
         Logger.LogInformation("Application started.");
 
-        var dbService = new DatabaseService(DbFile, LoggerFactory.CreateLogger<DatabaseService>());
+        // Initialize repositories and services
+        var launchRepo = new LaunchRepository(DbFile_launches, LoggerFactory.CreateLogger<LaunchRepository>());
+        var emailRepo = new EmailRepository(DbFile_emails, LoggerFactory.CreateLogger<EmailRepository>());
         var jsonService = new JsonService(LoggerFactory.CreateLogger<JsonService>());
+        var emailService = new EmailService(LoggerFactory.CreateLogger<EmailService>());
+        var launchService = new LaunchService(LoggerFactory.CreateLogger<LaunchService>());
 
-        dbService.EnsureDatabase();
+        // Ensure database tables exist
+        await launchRepo.EnsureDatabase();
+        await emailRepo.EnsureEmailTable();
+
+        // Load email list and update database
+        var emailList = await jsonService.LoadEmailsFromJson("emails_config.json");
+        await emailRepo.UpdateEmailReceivers(emailList);
+
+        // Load launches from JSON and update database
         var newLaunches = await jsonService.LoadLaunchDataFromFile(JsonFile);
-        var existingLaunches = dbService.GetExistingLaunches();
+        var existingLaunches = await launchRepo.GetExistingLaunches();
+        var changes = await launchService.CompareAndUpdateLaunches(launchRepo, newLaunches, existingLaunches);
 
-        var changes = CompareAndUpdateLaunches(dbService, newLaunches, existingLaunches);
-        
-        Logger.LogInformation("Changes detected: " + changes.Count);
-        foreach (var change in changes)
+        Logger.LogInformation($"Changes detected: {changes.Count}");
+
+        // Fetch email subscribers
+        var (newMembers, existingMembers, allMembers) = await emailRepo.GetEmailsFromDatabase();
+
+        // Monday: Send full launch list to all subscribers
+        if (DateTime.Now.DayOfWeek == DayOfWeek.Monday)
         {
-            Logger.LogInformation(change);
+            Logger.LogInformation("Today is Monday! Sending weekly launch schedule.");
+            string emailContent = GenerateLaunchesHtml(newLaunches);
+            emailService.SendEmails(allMembers, "Next Week Rocket Launches", emailContent);
+        }
+        else
+        {
+            if (changes.Count > 0)
+            {
+                SendUpdateEmails(emailService, changes, existingMembers);
+            }
+            else
+            {
+                Logger.LogInformation("Nothing new, checking if there are new members.");
+            }
+
+            if (newMembers.Count > 0)
+            {
+                SendNewMemberEmail(emailService, newLaunches, newMembers);
+            }
         }
 
         Logger.LogInformation("Application finished execution.");
     }
 
-    private static List<string> CompareAndUpdateLaunches(DatabaseService dbService, List<Launch> newLaunches, List<Launch> existingLaunches)
+    // Generates the HTML for weekly launch emails
+    private static string GenerateLaunchesHtml(List<Launch> launches)
     {
-        var changes = new List<string>();
-        var existingDict = existingLaunches.ToDictionary(l => l.Id);
-        var newIds = new HashSet<string>(newLaunches.Select(l => l.Id));
+        var groupedLaunches = launches
+            .Select(l => new
+            {
+                Launch = l,
+                Date = DateTime.ParseExact(l.Net, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)
+            })
+            .GroupBy(l => l.Date.DayOfWeek)
+            .OrderBy(g => (int)g.Key)
+            .Select(g => new
+            {
+                Day = g.Key,
+                Launches = g.OrderBy(l => l.Date)
+            });
 
-        foreach (var newLaunch in newLaunches)
+        string launchesList = "";
+        foreach (var group in groupedLaunches)
         {
-            if (!existingDict.TryGetValue(newLaunch.Id, out var existingLaunch))
-            {
-                changes.Add($"New: {newLaunch.Name} (Date: {newLaunch.Net})");
-                dbService.InsertLaunch(newLaunch);
-            }
-            else if (existingLaunch.Name != newLaunch.Name || existingLaunch.Net != newLaunch.Net || existingLaunch.Status.Name != newLaunch.Status.Name)
-            {
-                changes.Add($"Updated: {newLaunch.Name} (New Date: {newLaunch.Net}, New Status: {newLaunch.Status.Name})");
-                dbService.UpdateLaunch(newLaunch);
-            }
+            string dayName = group.Day.ToString();
+            launchesList += $@"
+                <div class='day-section'>
+                    <h3>{dayName}</h3>
+                    {string.Join("", group.Launches.Select(l => $@"
+                        <div class='launch-card'>
+                            <span class='rocket-icon'>🚀</span> {l.Launch.Name} | {l.Date:HH:mm 'UTC'}
+                        </div>"))}
+                </div>";
         }
 
-        foreach (var id in existingDict.Keys.Except(newIds))
+        return RocketLaunchNotifier.Email.EmailTemplateHelper.LoadTemplate("Templates/NewWeekNotification.html", launchesList);
+    }
+
+    // Sends email updates for launch changes
+    private static void SendUpdateEmails(EmailService emailService, List<LaunchChange> changes, List<string> existingMembers)
+    {
+        if (existingMembers.Count == 0) return;
+
+        string changesList = "";
+        var groupedChanges = changes
+            .Select(c => new
+            {
+                Launch = c.Launch,
+                Date = DateTime.ParseExact(c.Launch.Net, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal),
+                ChangeType = c.ChangeType
+            })
+            .GroupBy(c => c.ChangeType)
+            .ToDictionary(
+                g => g.Key,
+                g => g.GroupBy(c => c.Date.DayOfWeek)
+                    .OrderBy(g => (int)g.Key)
+                    .Select(g => new
+                    {
+                        Day = g.Key,
+                        Launches = g.OrderBy(l => l.Date)
+                    }).ToList()
+            );
+
+        foreach (var changeGroup in groupedChanges)
         {
-            changes.Add($"Postponed: {existingDict[id].Name} (Previous Date: {existingDict[id].Net})");
-            dbService.DeleteLaunch(id);
+            string changeTypeLabel = changeGroup.Key switch
+            {
+                LaunchChangeType.NEW => "🆕 New Launches",
+                LaunchChangeType.STATUS_CHANGE => "❓ Updated Launch Status",
+                LaunchChangeType.RESCHEDULED => "🕒 Rescheduled Launches",
+                LaunchChangeType.POSTPONED => "🚫 Postponed/Canceled Launches",
+                _ => "❓ Other Changes"
+            };
+
+            changesList += $"<h2>{changeTypeLabel}</h2>";
+            changesList += "<div class='day-section'>";
+            foreach (var group in changeGroup.Value)
+            {
+                changesList += $@"
+                        {string.Join("", group.Launches.Select(l => $@"
+                            <div class='launch-card'>
+                                <span class='rocket-icon'>🚀</span> {l.Launch.Name} | 
+                                {(changeGroup.Key == LaunchChangeType.POSTPONED ? "" : $"{l.Date}")}
+                                {(changeGroup.Key == LaunchChangeType.STATUS_CHANGE ? $" | {l.Launch.Status.Name}" : "")}
+                            </div>"))}
+                ";
+            }
+
+            changesList += "</div>";
         }
 
-        return changes;
+        string emailContent = RocketLaunchNotifier.Email.EmailTemplateHelper.LoadTemplate("Templates/UpdatesNotification.html", changesList);
+        emailService.SendEmails(existingMembers, "Rocket Launch Updates For Next Week", emailContent);
+    }
+
+    // Sends welcome email to new members with full launch schedule
+    private static void SendNewMemberEmail(EmailService emailService, List<Launch> newLaunches, List<string> newMembers)
+    {
+        string emailContent = GenerateLaunchesHtml(newLaunches);
+        emailService.SendEmails(newMembers, "Welcome! Upcoming Rocket Launches", emailContent);
     }
 }
