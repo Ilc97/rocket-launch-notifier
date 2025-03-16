@@ -19,6 +19,8 @@ namespace RocketLaunchNotifier.Services
         // Generates the HTML for weekly launch emails
         public string GenerateLaunchesHtml(List<Launch> launches)
         {   
+            _logger.LogInformation($"Generating HTML email for new week launches");
+
             //Group launches by days
             var groupedLaunches = launches
                 .Select(l => new
@@ -55,7 +57,9 @@ namespace RocketLaunchNotifier.Services
 
         // Sends email updates for launch changes
         public void SendUpdateEmails(EmailService emailService, List<LaunchChange> changes, List<string> existingMembers)
-        {
+        {   
+            _logger.LogInformation($"Generating HTML email for new updates");
+
             if (existingMembers.Count == 0) return;
 
             string changesList = "";
@@ -113,6 +117,8 @@ namespace RocketLaunchNotifier.Services
         // Sends welcome email to new members with full launch schedule
         public void SendNewMemberEmail(EmailService emailService, List<Launch> newLaunches, List<string> newMembers)
         {
+            _logger.LogInformation($"Generating HTML email for new members");
+
             string emailContent = GenerateLaunchesHtml(newLaunches);
             emailService.SendEmails(newMembers, "Welcome! Upcoming Rocket Launches", emailContent);
         }

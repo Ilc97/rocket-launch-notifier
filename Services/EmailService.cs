@@ -31,7 +31,8 @@ namespace RocketLaunchNotifier.Services
         public void SendEmail(string recipient, string subject, string body)
         {
             try
-            {
+            {   
+                _logger.LogInformation($"Sending email...");
                 using var smtpClient = new SmtpClient(_smtpHost)
                 {
                     Port = _smtpPort,

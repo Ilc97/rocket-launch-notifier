@@ -2,8 +2,6 @@
 using RocketLaunchNotifier.Database.LaunchRepository;
 using RocketLaunchNotifier.Services;
 using RocketLaunchNotifier.Database.EmailRepository;
-using System.Globalization;
-using RocketLaunchNotifier.Models;
 
 class Program
 {
