@@ -34,6 +34,7 @@ namespace RocketLaunchNotifier.Services
         {
             try
             {
+                _logger.LogInformation($"Loading emails from json file: {jsonFile}");
                 var jsonContent = await File.ReadAllTextAsync(jsonFile);
 
                 var emailConfig = JsonSerializer.Deserialize<EmailConfig>(jsonContent, new JsonSerializerOptions
@@ -46,7 +47,7 @@ namespace RocketLaunchNotifier.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error reading email JSON file: {ex.Message}");
+                _logger.LogError($"Error reading email JSON file: {ex.Message}");
                 return new List<string>();
             }
         }

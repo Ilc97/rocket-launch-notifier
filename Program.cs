@@ -57,6 +57,7 @@ class Program
         {
             if (changes.Count > 0)
             {
+                Logger.LogInformation("New changes. Updating existing members.");
                 SendUpdateEmails(emailService, changes, existingMembers);
             }
             else
@@ -66,6 +67,7 @@ class Program
 
             if (newMembers.Count > 0)
             {
+                Logger.LogInformation("New members. Notifying them.");
                 SendNewMemberEmail(emailService, newLaunches, newMembers);
             }
         }

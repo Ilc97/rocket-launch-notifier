@@ -14,7 +14,8 @@ namespace RocketLaunchNotifier.Services
         }
 
         public async Task<List<LaunchChange>> CompareAndUpdateLaunches(LaunchRepository dbService, List<Launch> newLaunches, List<Launch> existingLaunches)
-        {
+        {   
+            _logger.LogInformation($"Comparing and updating launches");
             var changes = new List<LaunchChange>();
             var existingDict = existingLaunches.ToDictionary(l => l.Id);
             var newIds = new HashSet<string>(newLaunches.Select(l => l.Id));
