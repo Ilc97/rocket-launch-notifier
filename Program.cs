@@ -7,14 +7,11 @@ using RocketLaunchNotifier.Models;
 
 class Program
 {
-    private static readonly string JsonFile = "launches_example.json";
+    private static readonly string JsonFile = "testing/launches_example.json";
     private static readonly string DbFile_launches = "rocket_launches.db";
     private static readonly string DbFile_emails = "emails.db";
 
-    private static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder => builder.AddConsole(options =>
-    {
-        options.TimestampFormat = "[HH:mm:ss] ";
-    }));
+    private static readonly ILoggerFactory LoggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder => builder.AddConsole(options => { options.TimestampFormat = "[HH:mm:ss] "; }));
     private static readonly ILogger<Program> Logger = LoggerFactory.CreateLogger<Program>();
 
     static async Task Main()
@@ -27,6 +24,15 @@ class Program
         var jsonService = new JsonService(LoggerFactory.CreateLogger<JsonService>());
         var emailService = new EmailService(LoggerFactory.CreateLogger<EmailService>());
         var launchService = new LaunchService(LoggerFactory.CreateLogger<LaunchService>());
+        var launchApiService = new LaunchApiService(LoggerFactory.CreateLogger<LaunchApiService>(), "https://ll.thespacedevs.com/2.3.0/launches");
+        
+        //Fetching data from API
+        var launchData = await launchApiService.FetchLaunchDataAsync();
+        
+        if (launchData == null)
+        {
+            Logger.LogError("Failed to fetch launch data.");
+        }
 
         // Ensure database tables exist
         await launchRepo.EnsureDatabase();
@@ -36,8 +42,10 @@ class Program
         var emailList = await jsonService.LoadEmailsFromJson("emails_config.json");
         await emailRepo.UpdateEmailReceivers(emailList);
 
-        // Load launches from JSON and update database
-        var newLaunches = await jsonService.LoadLaunchDataFromFile(JsonFile);
+        // For testing, enable load launches from JSON and update database. Uncomment the next line.
+        //var newLaunches = await jsonService.LoadLaunchDataFromFile(JsonFile);
+        var newLaunches = launchData;
+
         var existingLaunches = await launchRepo.GetExistingLaunches();
         var changes = await launchService.CompareAndUpdateLaunches(launchRepo, newLaunches, existingLaunches);
 
@@ -106,7 +114,7 @@ class Program
                 </div>";
         }
 
-        return RocketLaunchNotifier.Email.EmailTemplateHelper.LoadTemplate("Templates/NewWeekNotification.html", launchesList);
+        return RocketLaunchNotifier.Email.EmailTemplateHelper.LoadTemplate("Templates/EmailTemplate.html", launchesList, "Upcoming Rocket Launches", "Here are the scheduled launches for the upcoming week:");
     }
 
     // Sends email updates for launch changes
@@ -162,7 +170,7 @@ class Program
             changesList += "</div>";
         }
 
-        string emailContent = RocketLaunchNotifier.Email.EmailTemplateHelper.LoadTemplate("Templates/UpdatesNotification.html", changesList);
+        string emailContent = RocketLaunchNotifier.Email.EmailTemplateHelper.LoadTemplate("Templates/EmailTemplate.html", changesList, "Updates Of Upcoming Rocket Launches", "What's new?");
         emailService.SendEmails(existingMembers, "Rocket Launch Updates For Next Week", emailContent);
     }
 
