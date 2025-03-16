@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using RocketLaunchNotifier.Database.LaunchRepository;
 using RocketLaunchNotifier.Services;
-using RocketLaunchNotifier.Models;
 using RocketLaunchNotifier.Database.EmailRepository;
-
 
 class Program
 {   
@@ -34,8 +32,8 @@ class Program
         var emailService = new EmailService(LoggerFactory.CreateLogger<EmailService>());
         var launchService = new LaunchService(LoggerFactory.CreateLogger<LaunchService>());
         //Create tables if not exist
-        launchRepo.EnsureDatabase();
-        emailRepo.EnsureEmailTable();
+        await launchRepo.EnsureDatabase();
+        await emailRepo.EnsureEmailTable();
 
         //Loading list of emails from json
         var emailList = await jsonService.LoadEmailsFromJson("emails_config.json");
@@ -58,7 +56,7 @@ class Program
 
 
         // Fetch emails from database
-        var (newMembers, existingMembers) = emailRepo.GetEmailsFromDatabase();
+        var (newMembers, existingMembers) = await emailRepo.GetEmailsFromDatabase();
 
         if (changes.Count > 0)
         {

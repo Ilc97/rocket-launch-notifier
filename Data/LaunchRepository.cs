@@ -1,8 +1,6 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 using RocketLaunchNotifier.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace RocketLaunchNotifier.Database.LaunchRepository
 {

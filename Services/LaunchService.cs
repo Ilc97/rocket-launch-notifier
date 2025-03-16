@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using RocketLaunchNotifier.Database.LaunchRepository;
 using RocketLaunchNotifier.Models;
