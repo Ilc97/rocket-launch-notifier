@@ -27,6 +27,7 @@ namespace RocketLaunchNotifier.Services
             // Calculate next week's start and end date in UTC
             (string windowStart, string windowEnd) = GetNextWeekDateRange();
 
+            _logger.LogInformation($"Next week dates: {windowStart} - {windowEnd}");
             // Construct the API URL with dynamic dates
             //string apiUrl = $"https://ll.thespacedevs.com/2.3.0/launches/?window_start__gt={windowStart}&window_end__lt={windowEnd}&mode=list";
             string apiUrl = $"{_apiUrl}/?window_start__gt={windowStart}&window_end__lt={windowEnd}&mode=list";
@@ -54,7 +55,7 @@ namespace RocketLaunchNotifier.Services
 
             // Find next Monday
             int daysUntilMonday = ((int)DayOfWeek.Monday - (int)now.DayOfWeek + 7) % 7;
-            DateTime nextMonday = now.AddDays(daysUntilMonday).Date;
+            DateTime nextMonday = now.AddDays(daysUntilMonday == 0 ? 7 : daysUntilMonday).Date;
 
             // Find next Sunday
             DateTime nextSunday = nextMonday.AddDays(6).Date.AddHours(23).AddMinutes(59).AddSeconds(59);

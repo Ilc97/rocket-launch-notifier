@@ -21,7 +21,12 @@ namespace RocketLaunchNotifier.Services
         {   
             _logger.LogInformation($"Generating HTML email for new week launches");
 
-            //Group launches by days
+            string launchesList = "";
+
+            //If there are new launches, send the new week template
+            if(launches.Count>0){
+
+                //Group launches by days
             var groupedLaunches = launches
                 .Select(l => new
                 {
@@ -36,21 +41,27 @@ namespace RocketLaunchNotifier.Services
                     Launches = g.OrderBy(l => l.Date)
                 });
             
-            string launchesList = "";
 
-            //Loops through each day
-            foreach (var group in groupedLaunches)
-            {
-                string dayName = group.Day.ToString();
+                //Loops through each day
+                foreach (var group in groupedLaunches)
+                {
+                    string dayName = group.Day.ToString();
+                    launchesList += $@"
+                        <div class='day-section'>
+                            <h3>{dayName}</h3>
+                            {string.Join("", group.Launches.Select(l => $@"
+                                <div class='launch-card'>
+                                    <span class='rocket-icon'>🚀</span> {l.Launch.Name} | {l.Date:HH:mm 'UTC'}
+                                </div>"))}
+                        </div>";
+                }
+            }else{
                 launchesList += $@"
-                    <div class='day-section'>
-                        <h3>{dayName}</h3>
-                        {string.Join("", group.Launches.Select(l => $@"
-                            <div class='launch-card'>
-                                <span class='rocket-icon'>🚀</span> {l.Launch.Name} | {l.Date:HH:mm 'UTC'}
-                            </div>"))}
-                    </div>";
+                        <div class='description'>
+                            <h2>No launches are scheduled for next week.</h2>
+                        </div>";
             }
+            
 
             return Email.EmailTemplateHelper.LoadTemplate("Templates/EmailTemplate.html", launchesList, "Upcoming Rocket Launches", "Here are the scheduled launches for the upcoming week:");
         }
