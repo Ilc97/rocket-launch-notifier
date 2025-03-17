@@ -1,0 +1,367 @@
+{
+    "count": 11,
+    "next": "https://ll.thespacedevs.com/2.3.0/launches/?limit=10&mode=list&offset=10&window_end__lt=2025-03-21T00%3A00%3A00Z&window_start__gt=2025-03-14T00%3A00%3A00Z",
+    "previous": null,
+    "results": [
+        {
+            "id": "fb39ac94-5e74-4ee9-afc5-df19c4132b28",
+            "url": "https://ll.thespacedevs.com/2.3.0/launches/fb39ac94-5e74-4ee9-afc5-df19c4132b28/",
+            "name": "Falcon 9 Block 5 | Crew-10",
+            "response_mode": "list",
+            "slug": "falcon-9-block-5-crew-10",
+            "launch_designator": "2025-049",
+            "status": {
+                "id": 3,
+                "name": "Launch Successful",
+                "abbrev": "Success",
+                "description": "The launch vehicle successfully inserted its payload(s) into the target orbit(s)."
+            },
+            "last_updated": "2025-03-16T02:08:38Z",
+            "net": "2025-03-15T23:03:48Z",
+            "net_precision": {
+                "id": 0,
+                "name": "Second",
+                "abbrev": "SEC",
+                "description": "The T-0 is accurate to the second."
+            },
+            "window_end": "2025-03-14T23:03:48Z",
+            "window_start": "2025-03-14T23:03:48Z",
+            "image": {
+                "id": 1385,
+                "name": "Crew Dragon at sunset",
+                "image_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/falcon2520925_image_20220301072106.jpeg",
+                "thumbnail_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/255bauto255d__image_thumbnail_20240305192609.jpeg",
+                "credit": "SpaceX",
+                "license": {
+                    "id": 5,
+                    "name": "CC BY-NC 2.0",
+                    "priority": 1,
+                    "link": "https://creativecommons.org/licenses/by-nc/2.0/"
+                },
+                "single_use": false,
+                "variants": []
+            },
+            "infographic": null
+        },
+        {
+            "id": "8d6bf950-c580-4fa5-9bf2-a85700dabce3",
+            "url": "https://ll.thespacedevs.com/2.3.0/launches/8d6bf950-c580-4fa5-9bf2-a85700dabce3/",
+            "name": "Long March 2D | SuperView Neo 3-02",
+            "response_mode": "list",
+            "slug": "long-march-2d-superview-neo-3-02",
+            "launch_designator": "2025-051",
+            "status": {
+                "id": 3,
+                "name": "Launch UnSuccessful",
+                "abbrev": "Success",
+                "description": "The launch vehicle successfully inserted its payload(s) into the target orbit(s)."
+            },
+            "last_updated": "2025-03-16T04:18:34Z",
+            "net": "2025-03-15T04:11:00Z",
+            "net_precision": {
+                "id": 1,
+                "name": "Minute",
+                "abbrev": "MIN",
+                "description": "The T-0 is accurate to the minute."
+            },
+            "window_end": "2025-03-15T04:26:00Z",
+            "window_start": "2025-03-15T04:03:00Z",
+            "image": {
+                "id": 1768,
+                "name": "[AUTO] Long March 2D - image",
+                "image_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/long2520march25202d_image_20190222031211.jpeg",
+                "thumbnail_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/255bauto255d__image_thumbnail_20240305193719.jpeg",
+                "credit": null,
+                "license": {
+                    "id": 1,
+                    "name": "Unknown",
+                    "priority": 9,
+                    "link": null
+                },
+                "single_use": true,
+                "variants": []
+            },
+            "infographic": null
+        },
+        {
+            "id": "4c2dfc7b-22f9-4695-8b13-46b7703871fc",
+            "url": "https://ll.thespacedevs.com/2.3.0/launches/4c2dfc7b-22f9-4695-8b13-46b7703871fc/",
+            "name": "Falcon 9 Block 5 | Transporter 13 (Dedicated SSO Rideshare)",
+            "response_mode": "list",
+            "slug": "falcon-9-block-5-transporter-13-dedicated-sso-ride",
+            "launch_designator": "2025-052",
+            "status": {
+                "id": 3,
+                "name": "Launch Successful",
+                "abbrev": "Success",
+                "description": "The launch vehicle successfully inserted its payload(s) into the target orbit(s)."
+            },
+            "last_updated": "2025-03-16T07:50:32Z",
+            "net": "2025-03-15T06:43:00Z",
+            "net_precision": {
+                "id": 0,
+                "name": "Second",
+                "abbrev": "SEC",
+                "description": "The T-0 is accurate to the second."
+            },
+            "window_end": "2025-03-15T06:56:00Z",
+            "window_start": "2025-03-15T06:39:00Z",
+            "image": {
+                "id": 1736,
+                "name": "[AUTO] Falcon 9 - image",
+                "image_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/falcon_9_image_20230807133459.jpeg",
+                "thumbnail_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/255bauto255d__image_thumbnail_20240305193628.jpeg",
+                "credit": null,
+                "license": {
+                    "id": 1,
+                    "name": "Unknown",
+                    "priority": 9,
+                    "link": null
+                },
+                "single_use": true,
+                "variants": []
+            },
+            "infographic": null
+        },
+        {
+            "id": "721a8641-458c-49ee-8442-2ef5b6fba880",
+            "url": "https://ll.thespacedevs.com/2.3.0/launches/721a8641-458c-49ee-8442-2ef5b6fba880/",
+            "name": "Falcon 9 Block 5 | Starlink Group 12-16",
+            "response_mode": "list",
+            "slug": "falcon-9-block-5-starlink-group-12-16",
+            "launch_designator": "2025-053",
+            "status": {
+                "id": 3,
+                "name": "Launch Successful",
+                "abbrev": "Success",
+                "description": "The launch vehicle successfully inserted its payload(s) into the target orbit(s)."
+            },
+            "last_updated": "2025-03-16T09:09:55Z",
+            "net": "2025-03-15T11:35:10Z",
+            "net_precision": {
+                "id": 0,
+                "name": "Second",
+                "abbrev": "SEC",
+                "description": "The T-0 is accurate to the second."
+            },
+            "window_end": "2025-03-15T14:59:00Z",
+            "window_start": "2025-03-15T10:28:00Z",
+            "image": {
+                "id": 1296,
+                "name": "Starlink night fairing",
+                "image_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/falcon2520925_image_20221009234147.png",
+                "thumbnail_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/255bauto255d__image_thumbnail_20240305192320.png",
+                "credit": "SpaceX",
+                "license": {
+                    "id": 5,
+                    "name": "CC BY-NC 2.0",
+                    "priority": 1,
+                    "link": "https://creativecommons.org/licenses/by-nc/2.0/"
+                },
+                "single_use": false,
+                "variants": []
+            },
+            "infographic": null
+        },
+        {
+            "id": "318df8ac-45a8-402b-a164-8bb7032601fd",
+            "url": "https://ll.thespacedevs.com/2.3.0/launches/318df8ac-45a8-402b-a164-8bb7032601fd/",
+            "name": "Angara 1.2 | Kosmos (Unknown Payload)",
+            "response_mode": "list",
+            "slug": "angara-12-kosmos-unknown-payload",
+            "launch_designator": null,
+            "status": {
+                "id": 3,
+                "name": "Launch Successful",
+                "abbrev": "Success",
+                "description": "The launch vehicle successfully inserted its payload(s) into the target orbit(s)."
+            },
+            "last_updated": "2025-03-16T14:36:42Z",
+            "net": "2025-03-16T10:50:00Z",
+            "net_precision": {
+                "id": 1,
+                "name": "Minute",
+                "abbrev": "MIN",
+                "description": "The T-0 is accurate to the minute."
+            },
+            "window_end": "2025-03-16T11:30:00Z",
+            "window_start": "2025-03-16T10:30:00Z",
+            "image": {
+                "id": 1677,
+                "name": "[AUTO] Angara 1.2 - image",
+                "image_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/angara25201.2_image_20190224012254.jpeg",
+                "thumbnail_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/255bauto255d__image_thumbnail_20240305193449.jpeg",
+                "credit": null,
+                "license": {
+                    "id": 1,
+                    "name": "Unknown",
+                    "priority": 9,
+                    "link": null
+                },
+                "single_use": true,
+                "variants": []
+            },
+            "infographic": null
+        },
+        {
+            "id": "b9fac3ef-050f-4e6d-9688-f493dbe07815",
+            "url": "https://ll.thespacedevs.com/2.3.0/launches/b9fac3ef-050f-4e6d-9688-f493dbe07815/",
+            "name": "Ceres-1 | Unknown Payload",
+            "response_mode": "list",
+            "slug": "ceres-1-unknown-payload",
+            "launch_designator": null,
+            "status": {
+                "id": 1,
+                "name": "Go for Launch",
+                "abbrev": "Go",
+                "description": "Current T-0 confirmed by official or reliable sources."
+            },
+            "last_updated": "2025-03-13T13:21:52Z",
+            "net": "2025-03-17T08:10:00Z",
+            "net_precision": {
+                "id": 2,
+                "name": "Hour",
+                "abbrev": "HR",
+                "description": "The T-0 is accurate to the hour."
+            },
+            "window_end": "2025-03-17T08:46:00Z",
+            "window_start": "2025-03-17T07:59:00Z",
+            "image": {
+                "id": 1708,
+                "name": "[AUTO] Ceres-1 - image",
+                "image_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/ceres-1_image_20230722081939.jpeg",
+                "thumbnail_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/255bauto255d__image_thumbnail_20240305193541.jpeg",
+                "credit": null,
+                "license": {
+                    "id": 1,
+                    "name": "Unknown",
+                    "priority": 9,
+                    "link": null
+                },
+                "single_use": true,
+                "variants": []
+            },
+            "infographic": null
+        },
+        {
+            "id": "ad025362-828f-448c-855d-bfe53e04cdeb",
+            "url": "https://ll.thespacedevs.com/2.3.0/launches/ad025362-828f-448c-855d-bfe53e04cdeb/",
+            "name": "Electron | High Five (Kinéis 21-25)",
+            "response_mode": "list",
+            "slug": "electron-high-five-kineis-21-25",
+            "launch_designator": null,
+            "status": {
+                "id": 1,
+                "name": "Go for Launch",
+                "abbrev": "Go",
+                "description": "Current T-0 confirmed by official or reliable sources."
+            },
+            "last_updated": "2025-03-15T08:08:19Z",
+            "net": "2025-03-18T01:31:00Z",
+            "net_precision": {
+                "id": 1,
+                "name": "Minute",
+                "abbrev": "MIN",
+                "description": "The T-0 is accurate to the minute."
+            },
+            "window_end": "2025-03-18T01:31:00Z",
+            "window_start": "2025-03-18T01:31:00Z",
+            "image": {
+                "id": 1727,
+                "name": "[AUTO] Electron - image",
+                "image_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/electron_image_20190705175640.jpeg",
+                "thumbnail_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/255bauto255d__image_thumbnail_20240305193613.jpeg",
+                "credit": null,
+                "license": {
+                    "id": 1,
+                    "name": "Unknown",
+                    "priority": 9,
+                    "link": null
+                },
+                "single_use": true,
+                "variants": []
+            },
+            "infographic": null
+        },
+        {
+            "id": "ff04cc6f-981d-4b55-8368-3b8a59c1120e",
+            "url": "https://ll.thespacedevs.com/2.3.0/launches/ff04cc6f-981d-4b55-8368-3b8a59c1120e/",
+            "name": "Falcon 9 Block 5 | Starlink Group 12-25",
+            "response_mode": "list",
+            "slug": "falcon-9-block-5-starlink-group-12-25",
+            "launch_designator": null,
+            "status": {
+                "id": 8,
+                "name": "To Be Confirmed",
+                "abbrev": "TBC",
+                "description": "Awaiting official confirmation - current date is known with some certainty."
+            },
+            "last_updated": "2025-03-13T17:32:58Z",
+            "net": "2025-03-18T18:09:00Z",
+            "net_precision": {
+                "id": 2,
+                "name": "Hour",
+                "abbrev": "HR",
+                "description": "The T-0 is accurate to the hour."
+            },
+            "window_end": "2025-03-18T22:40:00Z",
+            "window_start": "2025-03-18T18:09:00Z",
+            "image": {
+                "id": 1296,
+                "name": "Starlink night fairing",
+                "image_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/falcon2520925_image_20221009234147.png",
+                "thumbnail_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/255bauto255d__image_thumbnail_20240305192320.png",
+                "credit": "SpaceX",
+                "license": {
+                    "id": 5,
+                    "name": "CC BY-NC 2.0",
+                    "priority": 1,
+                    "link": "https://creativecommons.org/licenses/by-nc/2.0/"
+                },
+                "single_use": false,
+                "variants": []
+            },
+            "infographic": null
+        },
+        {
+            "id": "171bf3b5-9b1c-4bd8-b64c-111257d06131",
+            "url": "https://ll.thespacedevs.com/2.3.0/launches/171bf3b5-9b1c-4bd8-b64c-111257d06131/",
+            "name": "Falcon 9 Block 5 | NROL-57",
+            "response_mode": "list",
+            "slug": "falcon-9-block-5-nrol-57",
+            "launch_designator": null,
+            "status": {
+                "id": 8,
+                "name": "To Be Confirmed",
+                "abbrev": "TBC",
+                "description": "Awaiting official confirmation - current date is known with some certainty."
+            },
+            "last_updated": "2025-03-13T17:35:06Z",
+            "net": "2025-03-20T06:02:00Z",
+            "net_precision": {
+                "id": 2,
+                "name": "Hour",
+                "abbrev": "HR",
+                "description": "The T-0 is accurate to the hour."
+            },
+            "window_end": "2025-03-20T08:31:00Z",
+            "window_start": "2025-03-20T06:02:00Z",
+            "image": {
+                "id": 2264,
+                "name": "Falcon 9 on SLC-4E (NROL-167)",
+                "image_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/falcon_9_on_slc_image_20241024165956.jpg",
+                "thumbnail_url": "https://thespacedevs-prod.nyc3.digitaloceanspaces.com/media/images/falcon_9_on_slc_image_thumbnail_20241024165957.jpeg",
+                "credit": "SpaceX",
+                "license": {
+                    "id": 1,
+                    "name": "Unknown",
+                    "priority": 9,
+                    "link": null
+                },
+                "single_use": true,
+                "variants": []
+            },
+            "infographic": null
+        }
+    ]
+}
