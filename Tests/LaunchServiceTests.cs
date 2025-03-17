@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 
 public class LaunchApiServiceIntegrationTests
 {
+    //Just to show a simple test, but not the best solution, as the API has call limits per hour. 
     [Fact]
     public async Task FetchLaunchDataAsync_ShouldReturnValidJson_EvenIfNoLaunches()
     {
