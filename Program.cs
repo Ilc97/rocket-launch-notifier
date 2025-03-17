@@ -3,7 +3,6 @@ using RocketLaunchNotifier.Database.LaunchRepository;
 using RocketLaunchNotifier.Services;
 using RocketLaunchNotifier.Database.EmailRepository;
 
-//Main Program
 class Program
 {
     private static readonly string JsonFile = "Testing/launches_example.json";
