@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using RocketLaunchNotifier.Database.LaunchRepository;
 using RocketLaunchNotifier.Services;
 using RocketLaunchNotifier.Database.EmailRepository;
@@ -49,6 +49,8 @@ class Program
         //Fetching Launches stored in the DB
         var existingLaunches = await launchRepo.GetExistingLaunches();
 
+        //Get changes between data stored in DB and from API, and update the database
+        var changes = await launchService.CompareAndUpdateLaunches(launchRepo, newLaunches, existingLaunches);
 
         // Fetch email subscribers
         var (newMembers, existingMembers, allMembers) = await emailRepo.GetEmailsFromDatabase();
@@ -63,9 +65,6 @@ class Program
         else
         {
             //Others days
-            //Get changes between data stored in DB and from API
-            var changes = await launchService.CompareAndUpdateLaunches(launchRepo, newLaunches, existingLaunches);
-
             Logger.LogInformation($"Number of changes detected: {changes.Count}");
 
             
